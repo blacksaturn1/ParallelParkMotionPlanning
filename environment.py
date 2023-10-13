@@ -22,8 +22,27 @@ class Envir:
         self.textRect = self.text.get_rect()
         self.textRect.center=(dimensions[1]-600,dimensions[0]-100)
 
+        # obstacles
+        self.obstacles = [
+            pygame.Rect(100, 100, 50, 50),
+            pygame.Rect(300, 200, 50, 200),  
+            pygame.Rect(400, 400, 100, 100),
+            pygame.Rect(600, 600, 50, 50),
+            pygame.Rect(450, 600, 50, 50),
+        ]
+
+        # Initialize the grid attribute
+        self.grid_size = 20
+        self.grid_width = dimensions[1] // self.grid_size
+        self.grid_height = dimensions[0] // self.grid_size
+        self.grid = [[0 for _ in range(self.grid_width)] for _ in range(self.grid_height)]
+
     def write_info(self):
         txt = self.robot.get_write_info()
         self.text=self.font.render(txt,True,self.white,self.black)
         self.map.blit(self.text,self.textRect)
+
+    def draw_obstacles(self):
+        for obstacle in self.obstacles:
+            pygame.draw.rect(self.map, self.red, obstacle)
 
