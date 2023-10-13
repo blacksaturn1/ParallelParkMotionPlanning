@@ -17,7 +17,6 @@ robot=RobotAckermann(start,
             .1*3779.52)
 env=Envir(dims,robot)
 
-
 dt=0
 lastime=pygame.time.get_ticks()
 while running:
@@ -29,6 +28,7 @@ while running:
     lastime=pygame.time.get_ticks()
     pygame.display.update()
     env.map.fill(env.black)
+    env.draw_obstacles()
     robot.move()
     robot.draw(env.map)
 
