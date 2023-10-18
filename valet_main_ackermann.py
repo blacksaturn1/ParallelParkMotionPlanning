@@ -9,6 +9,8 @@ from environment import Envir
 
 pygame.init()
 start=(200,200)
+goal_orientation=0
+goal=(500, 600)
 dims=(800,800)
 running=True
 
