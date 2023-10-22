@@ -2,23 +2,30 @@ import pygame
 import math
 from math import pi
 from robot import Robot
-
+from typing import List, Optional, Tuple
+from ackermannState import AckermannState
 class RobotAckermann(Robot):
-    def __init__(self,startpos, robotImg,width) -> None:
+    def __init__(self,startpos, robotImg,width,goalPositionAndOrientation) -> None:
         self.m2p=3779.52
         # self.m2p=0.1
         self.w=width
         self.x=startpos[0]
         self.y=startpos[1]
+        self.x_goal=goalPositionAndOrientation[0]
+        self.y_goal=goalPositionAndOrientation[1]
+        self.orientation=goalPositionAndOrientation[2]
         self.theta=0
+        # self.theta_max=60
         self.v=0.00 * self.m2p
         self.psi = 0
-        self.maxspeed=0.02 * self.m2p
+        self.psi_max=60
+        self.maxspeed=10#0.02 * self.m2p
         self.minspeed=0.01 * self.m2p
         self.img = pygame.image.load(robotImg)
         self.rotated = self.img
         self.l=2.8 * 40
         self.dt = 0.005
+        self.distanceToGoal=0.0
         
         self.rect=self.rotated.get_rect(center=(self.x,
                                                 self.y))
@@ -26,9 +33,42 @@ class RobotAckermann(Robot):
         map.blit(self.rotated,self.rect)
 
     def get_write_info(self):
-        txt = f"V = {int(self.v)} PSI={int(self.psi)} THETA={int(self.theta)}"
+        txt = f"V = {int(self.v)} PSI={int(self.psi)} THETA={int(self.theta)} DTG: {float(self.distanceToGoal)}"
         return txt
     
+    def plan(self):
+        neighbors:List[AckermannState]=[]
+        psi_increment = 10
+        x=self.x
+        y=self.y
+        #self.distanceToGoal=((self.x_goal- self.x)**2 + (self.y_goal- self.y)**2)**.5
+        for v in [self.maxspeed,-self.maxspeed]:
+            for psi in range (-self.psi_max,self.psi_max+psi_increment,psi_increment):
+                x=self.x
+                y=self.y
+                thetadelta=((v/self.l)*math.tan(math.radians(psi)))*self.dt
+                thetadelta = thetadelta % (2*pi)
+                theta = self.theta + thetadelta
+                x+=v*math.cos(theta)*self.dt
+                # y is opposite direction of screen
+                y-=v*math.sin(theta)*self.dt
+                state = AckermannState((x,y),theta,psi,v)
+                neighbors.append(state)
+        return neighbors
+
+    def drive(self, nextMove:AckermannState):
+        
+        self.x+=nextMove.v*math.cos(self.theta)*self.dt
+        # y is opposite direction of screen
+        self.y-=nextMove.v*math.sin(self.theta)*self.dt
+        thetadelta=((nextMove.v/self.l)*math.tan(math.radians(nextMove.psi)))*self.dt #%(360)
+        self.theta += thetadelta
+
+        self.rotated=pygame.transform.rotozoom(self.img,
+                                               math.degrees(self.theta),1)
+        self.rect = self.rotated.get_rect(center=(self.x,self.y))
+        self.distanceToGoal=((self.x_goal- self.x)**2 + (self.y_goal- self.y)**2)**.5
+
     def move(self,event=None):
         if event is not None:
             if event.type==pygame.KEYDOWN:
