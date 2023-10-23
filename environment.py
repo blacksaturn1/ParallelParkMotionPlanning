@@ -2,7 +2,7 @@ import pygame
 from robot import Robot
 
 class Envir:
-    def __init__(self,dimensions,robot:Robot):
+    def __init__(self,dimensions,robot:Robot, goal):
         #colors
         self.robot=robot
         self.black=(0,0,0)
@@ -22,15 +22,17 @@ class Envir:
         self.textRect = self.text.get_rect()
         self.textRect.center=(dimensions[1]-600,dimensions[0]-100)
 
+        self.goal = goal
         # obstacles
         self.obstacles = [
-            pygame.Rect(100, 100, 50, 50),
-            pygame.Rect(300, 200, 50, 200),  
-            pygame.Rect(400, 400, 100, 100),
-            pygame.Rect(600, 600, 50, 50),
-            pygame.Rect(450, 600, 50, 50),
+            # pygame.Rect(100, 100, 50, 50),
+            # pygame.Rect(400, 400, 100, 100),
+            # pygame.Rect(400, 600, 50, 50),
+            pygame.Rect(300, 200, 200, 200),  
+            pygame.Rect(300, 600, 200, 100),
+            pygame.Rect(700, 600, 100, 100),
         ]
-
+        self.obstacleGrid=[]
         # Initialize the grid attribute
         self.grid_size = 20
         self.grid_width = dimensions[1] // self.grid_size
@@ -46,3 +48,5 @@ class Envir:
         for obstacle in self.obstacles:
             pygame.draw.rect(self.map, self.red, obstacle)
 
+    def draw_goal(self):
+        pygame.draw.circle(self.map, self.green,[self.goal[0],self.goal[1]],20,1)
