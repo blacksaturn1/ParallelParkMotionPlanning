@@ -12,16 +12,16 @@ class AckermannState():
         img
     ):
         self.xy=xy
-        self.x = xy[0]
-        self.y = xy[1]
-        self.theta = theta
-        self.psi = psi
+        self.x = round(xy[0],2)
+        self.y = round(xy[1],2)
+        self.theta = round(theta,1)
+        self.psi = round(psi,1)
         self.v=v
         self.img = img
         self.rotated = pygame.transform.rotozoom(self.img,math.degrees(self.theta),1)
         self.rect = self.rotated.get_rect(center=(self.x,self.y))
-        self.rect.width*=1.25
-        self.rect.height*=1.25
+        self.rect.width*=1.3
+        self.rect.height*=1.3
         self.cost_to_come=0
         self.cost_to_go = 0
     
@@ -37,7 +37,7 @@ class AckermannState():
         return (self.x,self.y,self.theta)
     
     def __hash__(self):
-        return hash((self.x, self.y,self.theta, self.psi,self.v))
+        return hash((self.x, self.y,self.theta))
     
     def __eq__(self, other):
         return (self.x, self.y,self.theta,self.psi,self.v) == (other.x, other.y,other.theta,other.psi,other.v)

@@ -14,9 +14,12 @@ start=(100,250,0)
 start=(100,100,0)
 start=(550, 550,0)
 start=(100,100,0)
+start=(550, 550,0)
+start=(100,100,0)
 goal=(550, 650,0)
 goal=(400, 500,0)
 goal=(575, 650,0)
+goal=(600, 620,0)
 dims=(800,800)
 running=True
 
@@ -25,10 +28,17 @@ robot=RobotAckermann(start,
             # 35,goal)
             .1*3779.52,goal)
 env=Envir(dims,robot,goal)
+env.map.fill(env.black)
+env.draw_obstacles()
+env.draw_goal()
+robot.draw(env.map)
+# env.write_info()
+pygame.display.update()
+
 
 dt=0
 lastime=pygame.time.get_ticks()
-lattice = Lattice(start,goal,env.obstacles,robot)
+lattice = Lattice(start,goal,env.obstacles,robot,env.map,env.write_text_info)
 lastState = lattice.search()
 time.sleep(2)
 
