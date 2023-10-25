@@ -1,5 +1,6 @@
 import pygame
 from robot import Robot
+from typing import List
 
 class Envir:
     def __init__(self,dimensions,robot:Robot, goal):
@@ -24,13 +25,13 @@ class Envir:
 
         self.goal = goal
         # obstacles
-        self.obstacles = [
+        self.obstacles:list[pygame.Rect] = [
             # pygame.Rect(100, 100, 50, 50),
             # pygame.Rect(400, 400, 100, 100),
             # pygame.Rect(400, 600, 50, 50),
             pygame.Rect(300, 200, 200, 200),  
-            pygame.Rect(300, 600, 200, 100),
-            pygame.Rect(700, 600, 100, 100),
+            pygame.Rect(200, 600, 300, 100),
+            pygame.Rect(650, 600, 150, 100),
         ]
         self.obstacleGrid=[]
         # Initialize the grid attribute
@@ -49,4 +50,4 @@ class Envir:
             pygame.draw.rect(self.map, self.red, obstacle)
 
     def draw_goal(self):
-        pygame.draw.circle(self.map, self.green,[self.goal[0],self.goal[1]],20,1)
+        pygame.draw.circle(self.map, self.green,[self.goal[0],self.goal[1]],15,1)
