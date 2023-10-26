@@ -1,30 +1,34 @@
 import pygame
 import math
 from math import pi
-from ackermann import RobotAckermann
-from environment import Envir
-from lattice import Lattice
+# from valrobots.ackermann import RobotAckermann
+from valet.robots.ackermann import RobotAckermann
+from valet.environment import Envir
+from valet.lattice import Lattice
 import time
 
 
 pygame.init()
-start=(100,450,0)
+# start=(100,450,0)
+# start=(100,100,0)
+# start=(100,250,0)
+# start=(100,100,0)
+# start=(550, 550,0)
+# start=(100,100,0)
+# start=(550, 550,0)
+
 start=(100,100,0)
-start=(100,250,0)
-start=(100,100,0)
-start=(550, 550,0)
-start=(100,100,0)
-start=(550, 550,0)
-start=(100,100,0)
-goal=(550, 650,0)
-goal=(400, 500,0)
-goal=(575, 650,0)
+
+# goal=(550, 650,0)
+# goal=(400, 500,0)
+# goal=(575, 650,0)
 goal=(600, 620,0)
+
 dims=(800,800)
 running=True
 
 robot=RobotAckermann(start,
-            r"diff_drive.png",
+            r"./valet/diff_drive.png",
             # 35,goal)
             .1*3779.52,goal)
 env=Envir(dims,robot,goal)

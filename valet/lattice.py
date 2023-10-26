@@ -1,24 +1,26 @@
-from ackermannState import AckermannState
+# from ackermannState import AckermannState
+from valet.states.state import State
 from typing import List, Optional, Tuple
 import pygame
 import math
-from ackermann import RobotAckermann
+#from ackermann import RobotAckermann
 from queue import PriorityQueue
 class Lattice:
 
     def __init__(self,location:Tuple[float,float,float],goal:Tuple[float,float,float],
-                 obstacleGrid,robot:RobotAckermann,display, write_info:callable) -> None:
+                 obstacleGrid,robot:State,display, write_info:callable) -> None:
         self.currentLocation=location
         self.goal:Tuple[float,float,float]=goal
-        self.neighbors:List[AckermannState]=[]
-        self.path: dict[AckermannState,AckermannState]={}
-        self.network_path: dict[AckermannState,List[AckermannState]]={}
-        self.cost: dict[AckermannState,float]={}
+        self.neighbors:List[State]=[]
+        self.path: dict[State,State]={}
+        self.network_path: dict[State,List[State]]={}
+        self.cost: dict[State,float]={}
         self.obstacles:list[pygame.Rect] = obstacleGrid
-        self.queue:PriorityQueue[AckermannState] = PriorityQueue()
+        self.queue:PriorityQueue[State] = PriorityQueue()
         self.robot = robot
         x,y,theta=self.currentLocation
-        self.firstState = AckermannState((x,y),theta,0,0,self.robot.img)
+
+        self.firstState = State((x,y),theta,self.robot.img)  #State((x,y),theta,0,0,self.robot.img)
         self.firstState.cost_to_come = 0
         self.firstState.cost_to_go=self.firstState.get_cost(self.goal)
         self.currentState = self.firstState
@@ -78,8 +80,8 @@ class Lattice:
             # self.network_path[state].extend(neighbors)
             for nextState in neighbors:
                 reward = 5
-                if nextState.v<0:
-                    reward = 6
+                # if nextState.v<0:
+                #     reward = 6
                 nextState.cost_to_come = (state.cost_to_come+
                                           nextState.get_cost(state_location))
                 nextState.cost_to_go=nextState.get_cost(self.goal)*reward
@@ -102,7 +104,7 @@ class Lattice:
         return state
         # return lowestCostState
 
-    def goalCheck(self,state:AckermannState):
+    def goalCheck(self,state:State):
         distanceToGoal = self.calculateCostToGoal(state)
         thetaDiff = abs(self.goal[2]-state.theta)
         return distanceToGoal<=5 and thetaDiff<=(math.pi/8)
@@ -112,7 +114,7 @@ class Lattice:
         for neighbor in self.neighbors:
             self.cost[neighbor]=self.calculateCost(neighbor)
 
-    def isCollision(self,state:AckermannState):
+    def isCollision(self,state:State):
         for obstacle in self.obstacles:
             if obstacle.colliderect(state.rect):
                 return True
@@ -155,8 +157,8 @@ class Lattice:
    
         return currentState
     
-    def calculateCostToGoal(self,ackermannState:AckermannState):
-        euclideanCost = ((self.goal[0]- ackermannState.x)**2 + (self.goal[1]- ackermannState.y)**2)**.5
+    def calculateCostToGoal(self,state:State):
+        euclideanCost = ((self.goal[0]- state.x)**2 + (self.goal[1]- state.y)**2)**.5
         # thetaCost = abs(self.goal[2]-ackermannState.theta)
         return euclideanCost #+ thetaCost
 
