@@ -1,5 +1,5 @@
 import pygame
-from robot import Robot
+from valet.robots.robot import Robot
 from typing import List
 
 class Envir:
