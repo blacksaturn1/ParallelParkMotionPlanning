@@ -34,7 +34,7 @@ class RobotTrailer(Robot):
         self.rotated = self.img
         self.rotated2 = self.img2
         self.l = 2.8 *self.m2p
-        self.l2 = 60
+        self.l2 = 15 *self.m2p
         self.dt = 0.5
         self.distanceToGoal=0.0
         
@@ -87,7 +87,7 @@ class RobotTrailer(Robot):
         self.rect = self.rotated.get_rect(center=(self.x,self.y))
         
        
-        self.theta2=self.v/200*math.sin(self.theta-self.theta2)
+        self.theta2=self.v/self.l2*math.sin(self.theta-self.theta2)
         # self.theta2=math.atan2(self.y2 - self.y,self.x2 - self.x)
         # self.theta2=math.atan2(self.y2 - self.y,self.x2 - self.x)
         self.theta2 = self.theta2 % (2*pi)
