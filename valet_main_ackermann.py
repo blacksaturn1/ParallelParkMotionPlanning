@@ -28,7 +28,7 @@ dims=(800,800)
 running=True
 
 robot=RobotAckermann(start,
-            r"./valet/diff_drive.png",
+            r"./valet/ackermann2.png",
             # 35,goal)
             .1*3779.52,goal)
 env=Envir(dims,robot,goal)
