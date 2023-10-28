@@ -25,6 +25,11 @@ start=(150,100,0)
 
 goal=(250, 100,0)
 goal=(600, 620,0)
+goal=(250, 250,0)
+goal=(250, 450,0)
+goal=(600, 620,0)
+
+
 dims=(800,800)
 running=True
 
@@ -78,7 +83,7 @@ while running:
     nextMove = lattice.step2()
     robot.drive(nextMove)
     lattice.currentState=nextMove
-    time.sleep(.25)
+    time.sleep(.15)
     env.map.fill(env.black)
     env.draw_obstacles()
     env.draw_goal()

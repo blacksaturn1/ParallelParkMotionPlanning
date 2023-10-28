@@ -27,20 +27,20 @@ class RobotTrailer(Robot):
         self.v=0.00 * self.m2p
         self.psi = 0
         self.psi_max=60
-        self.maxspeed=110#0.02 * self.m2p
+        self.maxspeed=100#0.02 * self.m2p
         self.minspeed=0.01 * self.m2p
         self.img = pygame.image.load(robotImg[0])
         self.img2 = pygame.image.load(robotImg[1])
         self.rotated = self.img
         self.rotated2 = self.img2
         self.l = 2.8 *self.m2p
-        self.l2 = 15 *self.m2p
-        self.dt = 0.5
+        self.l2 = 20 *self.m2p
+        self.dt = 0.4
         self.distanceToGoal=0.0
         
         self.rect=self.rotated.get_rect(center=(self.x,
                                                 self.y))
-        self.rect2=self.rotated2.get_rect(center=(self.x-70,
+        self.rect2=self.rotated2.get_rect(center=(self.x-80,
                                                 self.y))
         
     def draw(self,map:pygame.Surface):
@@ -79,24 +79,25 @@ class RobotTrailer(Robot):
             return
         self.v=nextMove.v
         self.psi = nextMove.psi
-        self.theta =nextMove.theta
+        self.theta = nextMove.theta
         self.x=nextMove.x
         self.y=nextMove.y
         self.rotated=pygame.transform.rotozoom(self.img,
                                                math.degrees(self.theta),1)
         self.rect = self.rotated.get_rect(center=(self.x,self.y))
         
-       
-        self.theta2=self.v/self.l2*math.sin(self.theta-self.theta2)
+        self.theta2+=self.v/90*math.sin(self.theta-self.theta2)*self.dt
+        
         # self.theta2=math.atan2(self.y2 - self.y,self.x2 - self.x)
         # self.theta2=math.atan2(self.y2 - self.y,self.x2 - self.x)
-        self.theta2 = self.theta2 % (2*pi)
+
+        # self.theta2 = self.theta2 % (2*pi)
         # if self.theta2 > math.pi:
         #         self.theta2 = (2*math.pi) - self.theta2
         #         self.theta2 = -1 * self.theta2
 
         xdiff = 3*self.m2p*math.cos(self.theta2)
-        ydiff = 3*self.m2p*math.sin(self.theta2)
+        ydiff = -3*self.m2p*math.sin(self.theta2)
         self.x2, self.y2 = (self.x - xdiff, self.y - ydiff)
 
         self.rotated2=pygame.transform.rotozoom(self.img2,

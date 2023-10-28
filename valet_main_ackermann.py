@@ -63,7 +63,7 @@ while running:
     nextMove = lattice.step2()
     robot.drive(nextMove)
     lattice.currentState=nextMove
-    time.sleep(.25)
+    time.sleep(.5)
     env.map.fill(env.black)
     env.draw_obstacles()
     env.draw_goal()
