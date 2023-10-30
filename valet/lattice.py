@@ -1,9 +1,7 @@
-# from ackermannState import AckermannState
 from valet.states.state import State
 from typing import List, Optional, Tuple
 import pygame
 import math
-#from ackermann import RobotAckermann
 from queue import PriorityQueue
 class Lattice:
 
@@ -19,13 +17,10 @@ class Lattice:
         self.queue:PriorityQueue[State] = PriorityQueue()
         self.robot = robot
         x,y,theta=self.currentLocation
-
-        self.firstState = State((x,y),theta,self.robot.img)  #State((x,y),theta,0,0,self.robot.img)
+        self.firstState = State((x,y),theta,self.robot.img)
         self.firstState.cost_to_come = 0
         self.firstState.cost_to_go=self.firstState.get_cost(self.goal)
         self.currentState = self.firstState
-        # previousState.cost_to_come = 0
-        # previousState.cost_to_go=previousState.get_cost(self.goal)
         self.lastState=None
         self.display = display
         self.write_info=write_info
@@ -46,19 +41,12 @@ class Lattice:
         lowestCostState=startState
         self.queue.put(startState)
         state=startState
-        # neighbors = self.robot.get_neighbors(self.currentLocation)
-        # for nextState in neighbors:
-        #         self.path[nextState]=previousState
         counter=0
         while not self.goalCheck(state) and self.queue.not_empty:
             counter+=1
             self.write_info("Planner iteration: {}".format(counter))
             state = self.queue.get()
-            # state.cost_to_come=state.get_cost(previousLocation)
-            # state.cost_to_go=state.get_cost(self.goal)
             cost = state.cost_to_go
-            # if cost_to_go>cost:
-            #     continue
             
             if state.cost_to_go<lowestCostState.cost_to_go:
                 lowestCostState=state
@@ -76,17 +64,11 @@ class Lattice:
 
             state_location = state.get_location()
             neighbors = self.robot.get_neighbors(state_location)
-            # self.network_path[state]=[]#.extend(neighbors)
-            # self.network_path[state].extend(neighbors)
             for nextState in neighbors:
                 reward = 5
-                # if nextState.v<0:
-                #     reward = 6
                 nextState.cost_to_come = (state.cost_to_come+
                                           nextState.get_cost(state_location))
                 nextState.cost_to_go=nextState.get_cost(self.goal)*reward
-                # if nextState.cost_to_go>cost:
-                #     continue
                 if self.isCollision(nextState):
                     continue
                 if nextState not in self.path:
@@ -98,11 +80,9 @@ class Lattice:
                     pygame.display.update()
             if counter >1 and counter%500==0:
                 break
-            ##self.queue.extend(neighbors)
-        # self.lastState = lowestCostState
         self.lastState = state
         return state
-        # return lowestCostState
+        
 
     def goalCheck(self,state:State):
         distanceToGoal = self.calculateCostToGoal(state)
@@ -145,14 +125,6 @@ class Lattice:
             currentState=previousState
             previousState=self.path[currentState]
             
-            
-        # for state,value in self.cost.items():
-        #     if value<lowestCost:
-        #         if not self.isCollision(state):
-        #             lowestCost=value
-        #             lowestCostNeighbor=state
-        # self.cost={}
-        # self.neigbors={}
         self.currentState=currentState
    
         return currentState

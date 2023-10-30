@@ -1,9 +1,6 @@
 import pygame
 import math
 from math import pi
-
-
-
 from valet.environment import Envir
 from valet.lattice import Lattice
 from valet.robots.diffdrive import RobotDiff
@@ -49,8 +46,6 @@ while running:
     pygame.display.update()
     
     #robot.move()
-    #lattice.add_neighbors(robot.plan())
-    #lattice.plan()
     nextMove = lattice.step2()
     robot.drive(nextMove)
     lattice.currentState=nextMove
@@ -58,7 +53,6 @@ while running:
     env.map.fill(env.black)
     env.draw_obstacles()
     env.draw_goal()
-
     robot.draw(env.map)
     env.write_info()
 

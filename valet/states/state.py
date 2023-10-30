@@ -35,11 +35,8 @@ class State:
         euclideanCost = ((x- self.x)**2 + (y- self.y)**2)**.5
         # thetaCost = abs(theta-self.theta)
         return euclideanCost  
-    # @abstractmethod
-    # def get_cost(self,goal):
-    #     pass
 
-    
+   
     def __hash__(self):
         return hash((self.x, self.y,self.theta))
     
