@@ -8,10 +8,6 @@ class Robot(ABC):
     def draw(self,map:pygame.Surface):
         map.blit(self.rotated,self.rect)
     
-    # @abstractmethod
-    # def move(self,event=None):
-    #     pass
-
     @abstractmethod
     def get_write_info(self):
         pass

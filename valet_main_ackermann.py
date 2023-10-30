@@ -1,7 +1,6 @@
 import pygame
 import math
 from math import pi
-# from valrobots.ackermann import RobotAckermann
 from valet.robots.ackermann import RobotAckermann
 from valet.environment import Envir
 from valet.lattice import Lattice
@@ -23,7 +22,6 @@ start=(100,100,0)
 # goal=(400, 500,0)
 # goal=(575, 650,0)
 goal=(600, 620,0)
-
 dims=(800,800)
 running=True
 
@@ -58,8 +56,6 @@ while running:
     pygame.display.update()
     
     #robot.move()
-    #lattice.add_neighbors(robot.plan())
-    #lattice.plan()
     nextMove = lattice.step2()
     robot.drive(nextMove)
     lattice.currentState=nextMove

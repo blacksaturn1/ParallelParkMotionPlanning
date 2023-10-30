@@ -3,16 +3,12 @@ import math
 from math import pi
 from valet.states.ackermannState import AckermannState
 from valet.robots.robot import Robot
-#from robots import robot
-
-
 from typing import List, Optional, Tuple
 
 
 class RobotTrailer(Robot):
     def __init__(self,startpos, robotImg,width,goalPositionAndOrientation) -> None:
         self.m2p=25#3779.52
-        # self.m2p=0.1
         self.w=width
         self.x=startpos[0]
         self.y=startpos[1]
@@ -23,7 +19,6 @@ class RobotTrailer(Robot):
         self.orientation=goalPositionAndOrientation[2]
         self.theta=0
         self.theta2=0
-        # self.theta_max=60
         self.v=0.00 * self.m2p
         self.psi = 0
         self.psi_max=60

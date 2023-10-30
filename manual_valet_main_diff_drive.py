@@ -1,11 +1,8 @@
 import pygame
 import math
 from math import pi
-from diffdrive import RobotDiff
-from environment import Envir
-
-
-
+from valet.robots.diffdrive import RobotDiff
+from valet.environment import Envir
 
 pygame.init()
 start=(200,200)
@@ -13,10 +10,10 @@ dims=(800,800)
 running=True
 
 robot=RobotDiff(start,
-            r"diff_drive.png",
+            r"./valet/diff_drive.png",
             .1*3779.52)
-env=Envir(dims,robot)
-
+robot.dt = .005
+env=Envir(dims,robot,(0,0,0))
 
 dt=0
 lastime=pygame.time.get_ticks()

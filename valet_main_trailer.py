@@ -1,7 +1,6 @@
 import pygame
 import math
 from math import pi
-# from valrobots.ackermann import RobotAckermann
 from valet.robots.trailer import RobotTrailer
 from valet.environment import Envir
 from valet.lattice import Lattice
@@ -40,18 +39,11 @@ robot=RobotTrailer(start,
 env=Envir(dims,robot,goal)
 
 env.obstacles:list[pygame.Rect] = [
-            # pygame.Rect(100, 100, 50, 50),
-            # pygame.Rect(400, 400, 100, 100),
-            # pygame.Rect(400, 600, 50, 50),
             pygame.Rect(300, 200, 200, 200),  
             pygame.Rect(200, 600, 200, 40),
             pygame.Rect(0, 650, 800, 160),
             pygame.Rect(650, 600, 150, 40),
         ]
-
-
-
-
 
 env.map.fill(env.black)
 env.draw_obstacles()
@@ -78,8 +70,6 @@ while running:
     pygame.display.update()
     
     #robot.move()
-    #lattice.add_neighbors(robot.plan())
-    #lattice.plan()
     nextMove = lattice.step2()
     robot.drive(nextMove)
     lattice.currentState=nextMove
